@@ -273,5 +273,65 @@
       });
     }
   </script>
+<!-- Modal Lightbox for Research Areas -->
+  <div class="modal-overlay" id="researchModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-window">
+      <button class="modal-close-btn" id="modalClose" aria-label="Close dialog">&times;</button>
+      <div class="modal-left">
+        <div class="modal-num" id="modalNum"></div>
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+      </div>
+      <div class="modal-right">
+        <img id="modalImg" src="" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Click-to-expand functionality for research items
+    const items = document.querySelectorAll('.research-item');
+    const modal = document.getElementById('researchModal');
+    const closeBtn = document.getElementById('modalClose');
+    const mNum = document.getElementById('modalNum');
+    const mTitle = document.getElementById('modalTitle');
+    const mDesc = document.getElementById('modalDesc');
+    const mImg = document.getElementById('modalImg');
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const num = item.querySelector('.research-num')?.innerText || '';
+        const title = item.querySelector('.research-body h3')?.innerText || '';
+        const desc = item.querySelector('.research-body p')?.innerText || '';
+        const img = item.querySelector('.research-figure img');
+
+        if (img) {
+          mNum.innerText = num;
+          mTitle.innerText = title;
+          mDesc.innerText = desc;
+          mImg.src = img.src;
+          mImg.alt = img.alt || title;
+
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden'; // prevent page background scrolling
+        }
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+  </script>  
 </body>
 </html>
